@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# FinPath — AI-Powered Personal CFO for Indian Users
 
-## Getting Started
+FinPath is an AI-powered personal finance app that closes the gap between daily spending and generational wealth. It runs 4 Claude-powered agents: Behavioral Analysis, Goal Modeling, Portfolio Intelligence, and a real-time Nudge Guardian that warns you before a purchase hurts your financial goals. Built for Indian users with ₹ formatting, Indian fund recommendations, and SEBI-aligned portfolio suggestions.
 
-First, run the development server:
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router) |
+| Language | TypeScript (strict) |
+| Styling | Tailwind CSS v4 |
+| Charts | Recharts |
+| Database | Supabase (Postgres) |
+| AI | Anthropic Claude (`claude-sonnet-4-20250514`) |
+| Notifications | react-hot-toast |
+| Icons | lucide-react |
+| PDF Export | jsPDF + html2canvas |
+| SMS | Twilio |
+
+---
+
+## Setup
+
+### Prerequisites
+- Node.js >= 20.9.0
+- Supabase project
+- Anthropic API key
+
+### Steps
 
 ```bash
+# 1. Clone and install
+git clone <repo>
+cd finpath
+npm install
+
+# 2. Fill environment variables
+# Edit .env.local with your actual keys:
+#   ANTHROPIC_API_KEY=sk-ant-...
+#   NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
+#   NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
+#   SUPABASE_SERVICE_ROLE_KEY=eyJ...
+#   TWILIO_ACCOUNT_SID=AC...
+#   TWILIO_AUTH_TOKEN=...
+#   TWILIO_PHONE_NUMBER=+1...
+
+# 3. Set up database
+# Open your Supabase project → SQL Editor
+# Paste and run the contents of SUPABASE_SCHEMA.sql
+
+# 4. Seed demo data (optional)
+npx ts-node --project tsconfig.json -r tsconfig-paths/register scripts/seed.ts
+# Copy the printed UUID into .env.local as NEXT_PUBLIC_DEMO_USER_ID
+
+# 5. Run the app
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Hackathon Demo Flow (8 steps)
 
-## Learn More
+1. **Landing page** — Show the hero headline and 3 feature cards. Click "Start for free →"
+2. **Onboarding Step 1** — Enter name "Arjun Mehta", income ₹75,000, and phone number
+3. **Onboarding Step 2** — Answer the 3 risk questions. Pick "Buy more — it's a discount!" to show risk score 5
+4. **Onboarding Step 3** — Drag and drop a sample bank CSV to show auto-parsing and category detection
+5. **Dashboard** — Show the animated health score, spending pie chart, and leakage cards (e.g., Swiggy weekend pattern)
+6. **Add Expense** — Click "+ Add Expense", enter "Swiggy ₹450, Food & Dining". Watch the Nudge Guardian popup appear with the orange warning, impact line, and two buttons
+7. **Goals page** — Create "Goa Trip ₹30,000 in 6 months". Watch the live preview calculate ₹156/day instantly as you type. Submit to trigger the AI narrative
+8. **Portfolio page** — Show the donut chart with allocation, SIP amount, and real Indian fund names like "Parag Parikh Flexi Cap" and "Sovereign Gold Bond"
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## AI Agents
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Agent | Function | Max Tokens |
+|---|---|---|
+| Behavioral Analysis | Categorizes spend, finds leakage patterns, scores health | 1000 |
+| Goal Modeling | Calculates inflation-adjusted daily savings, writes narrative | 120 |
+| Portfolio Intelligence | SEBI-aligned allocation with real Indian funds | 800 |
+| Nudge Guardian | Warns before goal-hurting purchases with exact impact | 200 |
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Purpose |
+|---|---|
+| `ANTHROPIC_API_KEY` | Claude API access |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Browser-safe Supabase key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only full-access key |
+| `TWILIO_ACCOUNT_SID` | SMS alerts |
+| `TWILIO_AUTH_TOKEN` | SMS alerts |
+| `TWILIO_PHONE_NUMBER` | SMS sender number |
+| `NEXT_PUBLIC_DEMO_USER_ID` | Pre-seeded demo user UUID |
